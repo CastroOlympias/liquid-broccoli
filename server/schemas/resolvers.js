@@ -56,7 +56,7 @@ const resolvers = {
             const token = signToken(user);
             return { token, user };
         },
-        SaveBook: async (parent, args, context) => {
+        savedBooks: async (parent, args, context) => {
             if (context.user) {
               const book = await bookSchema.create({ ...args, username: context.user.username });
       

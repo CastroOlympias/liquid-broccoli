@@ -23,7 +23,6 @@ const typeDefs = gql`
         user: User
     }
 
-    // Resolvers work on the the type Query and the mutations
     type Query {
         me: User
         users: [User]
@@ -33,9 +32,11 @@ const typeDefs = gql`
     }
 
     type Mutation {
-        login(email: String!), password: String!): Auth
+        login(email: String!, password: String!): Auth
         addUser(username: String!, email: String!, password: String!): Auth
-        saveBook(authors: [String!], description: String!, title: String!, bookId: String!, image: string!, link: String!): User
-        removeBook(bookId, String!); User
+        saveBook(authors: [String!], description: String!, title: String!, bookId: String!, image: String!, link: String!): User
+        removeBook(bookId: String!): User
     }
 `;
+
+module.exports = typeDefs;
