@@ -1,6 +1,5 @@
 const { AuthenticationError } = require('apollo-server-express');
 const { User, bookSchema } = require('../models')
-
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
@@ -20,13 +19,13 @@ const resolvers = {
             return User.find()
                 .select('-__v -password')
                 .populate('savedBooks')
-                
+
         },
         user: async (parent, { username }) => {
             return User.findOne({ username })
                 .select('-__v -password')
                 .populate('savedBooks')
-                
+
         },
         savedBooks: async (parent, { username }) => {
             const params = username ? { username } : {};
@@ -56,21 +55,19 @@ const resolvers = {
             const token = signToken(user);
             return { token, user };
         },
-        savedBooks: async (parent, args, context) => {
+        saveBook: async (parent, { bookId, authors, title, description, image, link }, context) => {
             if (context.user) {
-              const book = await bookSchema.create({ ...args, username: context.user.username });
-      
-              await User.findByIdAndUpdate(
-                { _id: context.user._id },
-                { $push: { savedBooks: book._id } },
-                { new: true }
-              );
-      
-              return book;
+                const updatedUser = await User.findOneAndUpdate(
+                    { _id: context.user._id },
+                    { $push: { savedBooks: { bookId, authors, title, description, image, link } } },
+                    { new: true, runValidators: true }
+                )
+
+                return updatedUser
             }
-      
+
             throw new AuthenticationError('You need to be logged in!');
-          },
+        },
     }
 
 }
