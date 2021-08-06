@@ -23,6 +23,7 @@ const typeDefs = gql`
         user: User
     }
 
+    // Resolvers work on the the type Query and the mutations
     type Query {
         me: User
         users: [User]
