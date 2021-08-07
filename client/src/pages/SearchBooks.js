@@ -3,11 +3,11 @@ import { Jumbotron, Container, Col, Form, Button, Card, CardColumns } from 'reac
 import { useMutation } from '@apollo/react-hooks';
 import { SAVE_BOOK } from '../utils/mutations';
 import Auth from '../utils/auth';
-import { searchGoogleBooks } from '../utils/API';
+// import { searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 
 const SearchBooks = () => {
-  
+
   // create state for holding returned google api data
   const [searchedBooks, setSearchedBooks] = useState([]);
   // create state for holding our search field data
@@ -33,13 +33,15 @@ const SearchBooks = () => {
 
     try {
       const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${searchInput}`);
+      console.log(searchInput)
+      console.log(response)
 
       if (!response.ok) {
         throw new Error('something went wrong!');
       }
 
       const { items } = await response.json();
-
+      console.log(items)
       const bookData = items.map((book) => ({
         bookId: book.id,
         authors: book.volumeInfo.authors || ['No author to display'],
@@ -69,14 +71,17 @@ const SearchBooks = () => {
 
     try {
       const { data } = await saveBook({
-        variables: { data: { ...bookToSave } }
+        variables: { bookData: { ...bookToSave } }
+
       });
+      console.log(data)
 
       // if (!response.ok) {
       //   throw new Error('something went wrong!');
       // }
 
       // if book successfully saves to user's account, save book id to state
+      console.log(savedBookIds)
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
     } catch (err) {
       console.error(err);
@@ -118,6 +123,7 @@ const SearchBooks = () => {
         </h2>
         <CardColumns>
           {searchedBooks.map((book) => {
+            // console.log(book)
             return (
               <Card key={book.bookId} border='dark'>
                 {book.image ? (

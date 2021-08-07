@@ -1,6 +1,5 @@
 import React from 'react';
 import { useMutation, useQuery } from '@apollo/react-hooks';
-
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
 import { GET_ME } from '../utils/queries'
 // import { getMe, deleteBook } from '../utils/API';
@@ -9,9 +8,10 @@ import { removeBookId } from '../utils/localStorage';
 import { REMOVE_BOOK } from '../utils/mutations';
 
 const SavedBooks = () => {
+  
+  const [ deleteBook ] = useMutation(REMOVE_BOOK)
   const { data } = useQuery(GET_ME)
   const userData = data?.me || [];
-  const [ deleteBook ] = useMutation(REMOVE_BOOK)
 
   // use this to determine if `useEffect()` hook needs to run again
   const userDataLength = Object.keys(userData).length;
@@ -51,11 +51,9 @@ const SavedBooks = () => {
     }
 
     try {
-      const response = await deleteBook(bookId, token);
-
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
+      await deleteBook({
+        variables: {bookId: bookId }
+      });
 
       // const updatedUser = await response.json();
       // setUserData(updatedUser);
