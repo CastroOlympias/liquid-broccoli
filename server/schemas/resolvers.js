@@ -27,10 +27,10 @@ const resolvers = {
                 // .populate('savedBooks')
 
         },
-        savedBooks: async (parent, { username }) => {
-            const params = username ? { username } : {};
-            return bookSchema.find(params).sort({ ceratedAt: -1 });
-        }
+        // savedBooks: async (parent, { username }) => {
+        //     const params = username ? { username } : {};
+        //     return bookSchema.find(params).sort({ ceratedAt: -1 });
+        // }
     },
     Mutation: {
         addUser: async (parent, args) => {
