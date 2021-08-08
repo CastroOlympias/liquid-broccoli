@@ -3,6 +3,10 @@
 ## Description
 This is a book search application which started as a RESTful API to a mongo database that I converted to a GraphQL using mutations and queries.
 
+ <a href="https://castro-luquid-broccoli.herokuapp.com/">Click here to see it on Heroku</a>
+
+ <img src="./GraphQL conversion.gif"/>
+
 ## Table of Contents
 - [Story](#Story)
 - [Installation](#Installation)
